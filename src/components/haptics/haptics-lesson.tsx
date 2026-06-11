@@ -1,10 +1,9 @@
 import * as Haptics from 'expo-haptics';
-import { router } from 'expo-router';
 import { useState } from 'react';
 import { Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Collapsible } from '@/components/ui/collapsible';
+import { LessonNotes } from '@/components/lesson-notes/lesson-notes';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
@@ -38,9 +37,6 @@ export function HapticsLesson() {
         contentInsetAdjustmentBehavior="automatic"
         contentContainerStyle={[styles.scrollContent, { paddingBottom: insets.bottom + Spacing.four }]}>
         <ThemedView style={[styles.header, { paddingTop: insets.top + Spacing.three }]}>
-          <Pressable onPress={() => router.back()} style={styles.backButton}>
-            <ThemedText type="linkPrimary">Back</ThemedText>
-          </Pressable>
           <ThemedText type="subtitle">Haptics</ThemedText>
           <ThemedText type="code">expo-haptics</ThemedText>
           <ThemedText themeColor="textSecondary" style={styles.intro}>
@@ -136,29 +132,7 @@ export function HapticsLesson() {
         )}
 
         <ThemedView style={styles.section}>
-          <ThemedText type="smallBold">What this lesson covers</ThemedText>
-          <Collapsible title="Selection — selectionAsync()">
-            <ThemedText type="small">
-              Light tap feedback for picker wheels, toggles, and list selections.
-            </ThemedText>
-          </Collapsible>
-          <Collapsible title="Notifications — notificationAsync()">
-            <ThemedText type="small">
-              Success, warning, and error patterns mapped to platform haptic engines.
-            </ThemedText>
-          </Collapsible>
-          <Collapsible title="Impacts — impactAsync()">
-            <ThemedText type="small">
-              Collision-style feedback with light, medium, heavy, rigid, and soft styles.
-            </ThemedText>
-          </Collapsible>
-          {Platform.OS === 'android' && (
-            <Collapsible title="Android — performAndroidHapticsAsync()">
-              <ThemedText type="small">
-                Preferred on Android for richer haptics without relying on basic vibration patterns.
-              </ThemedText>
-            </Collapsible>
-          )}
+          <LessonNotes lessonId="haptics" />
         </ThemedView>
       </ScrollView>
     </ThemedView>

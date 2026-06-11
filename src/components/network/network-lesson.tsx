@@ -1,10 +1,9 @@
 import * as Network from 'expo-network';
-import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Collapsible } from '@/components/ui/collapsible';
+import { LessonNotes } from '@/components/lesson-notes/lesson-notes';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
@@ -71,9 +70,6 @@ export function NetworkLesson() {
         contentInsetAdjustmentBehavior="automatic"
         contentContainerStyle={[styles.scrollContent, { paddingBottom: insets.bottom + Spacing.four }]}>
         <ThemedView style={[styles.header, { paddingTop: insets.top + Spacing.three }]}>
-          <Pressable onPress={() => router.back()} style={styles.backButton}>
-            <ThemedText type="linkPrimary">Back</ThemedText>
-          </Pressable>
           <ThemedText type="subtitle">Network</ThemedText>
           <ThemedText type="code">expo-network</ThemedText>
           <ThemedText themeColor="textSecondary" style={styles.intro}>
@@ -146,32 +142,7 @@ export function NetworkLesson() {
         )}
 
         <ThemedView style={styles.section}>
-          <ThemedText type="smallBold">What this lesson covers</ThemedText>
-          <Collapsible title="Live updates — useNetworkState()">
-            <ThemedText type="small">
-              React hook that tracks <ThemedText type="code">type</ThemedText>,{' '}
-              <ThemedText type="code">isConnected</ThemedText>, and{' '}
-              <ThemedText type="code">isInternetReachable</ThemedText>.
-            </ThemedText>
-          </Collapsible>
-          <Collapsible title="One-time read — getNetworkStateAsync()">
-            <ThemedText type="small">
-              Poll the current network state when you only need a snapshot.
-            </ThemedText>
-          </Collapsible>
-          <Collapsible title="IP address — getIpAddressAsync()">
-            <ThemedText type="small">
-              Returns the device IPv4 address. On web this uses a public IP lookup service.
-            </ThemedText>
-          </Collapsible>
-          <Collapsible title="Change events — addNetworkStateListener()">
-            <ThemedText type="small">
-              Subscribe to network changes and remove the subscription on unmount.
-            </ThemedText>
-          </Collapsible>
-          <Collapsible title="Airplane mode — isAirplaneModeEnabledAsync()">
-            <ThemedText type="small">Android-only helper for airplane mode status.</ThemedText>
-          </Collapsible>
+          <LessonNotes lessonId="network" />
         </ThemedView>
       </ScrollView>
     </ThemedView>

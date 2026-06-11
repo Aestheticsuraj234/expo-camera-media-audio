@@ -2,15 +2,31 @@ import { Link } from 'expo-router';
 import { SymbolView } from 'expo-symbols';
 import { Platform, Pressable, ScrollView, StyleSheet } from 'react-native';
 
+import { Collapsible } from '@/components/ui/collapsible';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { WebBadge } from '@/components/web-badge';
-import { LESSONS } from '@/constants/lessons';
+import {
+  getCategory,
+  getLessonsByCategory,
+  type LessonCategoryId,
+} from '@/constants/lessons';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
-export default function HomeScreen() {
+type CategoryHubProps = {
+  categoryId: LessonCategoryId;
+  showDeveloperNotes?: boolean;
+};
+
+export function CategoryHub({ categoryId, showDeveloperNotes = false }: CategoryHubProps) {
   const theme = useTheme();
+  const category = getCategory(categoryId);
+  const lessons = getLessonsByCategory(categoryId);
+
+  if (!category) {
+    return null;
+  }
 
   return (
     <ScrollView
@@ -18,14 +34,14 @@ export default function HomeScreen() {
       contentInsetAdjustmentBehavior="automatic"
       contentContainerStyle={styles.content}>
       <ThemedView style={styles.header}>
-        <ThemedText type="subtitle">Device APIs</ThemedText>
+        <ThemedText type="subtitle">{category.title}</ThemedText>
         <ThemedText themeColor="textSecondary" style={styles.subtitle}>
-          Hands-on lessons for camera, audio, media library, location, and more.
+          {category.description}
         </ThemedText>
       </ThemedView>
 
       <ThemedView style={styles.list}>
-        {LESSONS.map((lesson) => (
+        {lessons.map((lesson) => (
           <Link key={lesson.id} href={lesson.route} asChild>
             <Pressable style={({ pressed }) => [styles.card, pressed && styles.cardPressed]}>
               <ThemedView type="backgroundElement" style={styles.cardInner}>
@@ -49,6 +65,34 @@ export default function HomeScreen() {
           </Link>
         ))}
       </ThemedView>
+
+      {showDeveloperNotes && (
+        <ThemedView style={styles.notesSection}>
+          <ThemedText type="smallBold">Developer notes</ThemedText>
+          <Collapsible title="Development builds">
+            <ThemedText type="small">
+              Camera, microphone, contacts, and other native APIs need a development build after you
+              add packages. Run{' '}
+              <ThemedText type="code">eas build --profile development --platform android</ThemedText>{' '}
+              when native modules change.
+            </ThemedText>
+          </Collapsible>
+          <Collapsible title="Permissions">
+            <ThemedText type="small">
+              Runtime permissions are requested in code with hooks like{' '}
+              <ThemedText type="code">useCameraPermissions()</ThemedText>. Manifest entries are
+              configured in <ThemedText type="code">app.json</ThemedText> config plugins.
+            </ThemedText>
+          </Collapsible>
+          <Collapsible title="Expo SDK 55">
+            <ThemedText type="small">
+              Read the versioned docs at{' '}
+              <ThemedText type="code">https://docs.expo.dev/versions/v55.0.0/</ThemedText> before
+              changing native packages.
+            </ThemedText>
+          </Collapsible>
+        </ThemedView>
+      )}
 
       {Platform.OS === 'web' && <WebBadge />}
     </ScrollView>
@@ -97,5 +141,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: Spacing.one,
     marginTop: Spacing.one,
+  },
+  notesSection: {
+    maxWidth: MaxContentWidth,
+    width: '100%',
+    paddingHorizontal: Spacing.four,
+    paddingTop: Spacing.five,
+    gap: Spacing.three,
   },
 });

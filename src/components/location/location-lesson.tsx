@@ -1,12 +1,10 @@
 import * as Haptics from 'expo-haptics';
 import * as Location from 'expo-location';
-import { router } from 'expo-router';
 import { useIsFocused } from '@react-navigation/native';
 import { useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
-  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -14,7 +12,7 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Collapsible } from '@/components/ui/collapsible';
+import { LessonNotes } from '@/components/lesson-notes/lesson-notes';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
@@ -237,9 +235,6 @@ export function LocationLesson() {
   if (!permission.granted) {
     return (
       <ThemedView style={[styles.centered, styles.permissionScreen, { paddingTop: insets.top }]}>
-        <Pressable onPress={() => router.back()} style={styles.backButton}>
-          <ThemedText type="linkPrimary">Back</ThemedText>
-        </Pressable>
         <ThemedText type="subtitle">Location</ThemedText>
         <ThemedText themeColor="textSecondary" style={styles.permissionCopy}>
           Grant foreground location access to read GPS coordinates, watch live updates, reverse
@@ -260,9 +255,6 @@ export function LocationLesson() {
         contentInsetAdjustmentBehavior="automatic"
         contentContainerStyle={[styles.scrollContent, { paddingBottom: insets.bottom + Spacing.four }]}>
         <ThemedView style={[styles.header, { paddingTop: insets.top + Spacing.three }]}>
-          <Pressable onPress={() => router.back()} style={styles.backButton}>
-            <ThemedText type="linkPrimary">Back</ThemedText>
-          </Pressable>
           <ThemedText type="subtitle">Location</ThemedText>
           <ThemedText type="code">expo-location</ThemedText>
           <ThemedText themeColor="textSecondary" style={styles.intro}>
@@ -412,50 +404,7 @@ export function LocationLesson() {
         )}
 
         <ThemedView style={styles.section}>
-          <ThemedText type="smallBold">What this lesson covers</ThemedText>
-          <Collapsible title="Permissions — useForegroundPermissions()">
-            <ThemedText type="small">
-              Request <ThemedText type="code">When In Use</ThemedText> access with{' '}
-              <ThemedText type="code">useForegroundPermissions()</ThemedText>. Background tracking
-              needs separate setup and permissions.
-            </ThemedText>
-          </Collapsible>
-          <Collapsible title="Current position — getCurrentPositionAsync()">
-            <ThemedText type="small">
-              Fetch a fresh GPS fix with an <ThemedText type="code">accuracy</ThemedText> option.
-              This can take a few seconds indoors.
-            </ThemedText>
-          </Collapsible>
-          <Collapsible title="Cached position — getLastKnownPositionAsync()">
-            <ThemedText type="small">
-              Read the last cached fix for a faster response when high precision is not required.
-            </ThemedText>
-          </Collapsible>
-          <Collapsible title="Live updates — watchPositionAsync()">
-            <ThemedText type="small">
-              Subscribe to location changes using <ThemedText type="code">timeInterval</ThemedText>{' '}
-              and <ThemedText type="code">distanceInterval</ThemedText>. Remove the subscription
-              when the screen unmounts.
-            </ThemedText>
-          </Collapsible>
-          <Collapsible title="Geocoding — geocodeAsync() / reverseGeocodeAsync()">
-            <ThemedText type="small">
-              Convert addresses to coordinates and coordinates back into human-readable places.
-            </ThemedText>
-          </Collapsible>
-          <Collapsible title="Heading — getHeadingAsync()">
-            <ThemedText type="small">
-              Read compass heading from the device magnetometer through the location APIs.
-            </ThemedText>
-          </Collapsible>
-          {Platform.OS === 'android' && (
-            <Collapsible title="Emulator tip">
-              <ThemedText type="small">
-                Enable location in emulator settings and set a mock GPS point. Turn off Improve
-                Location Accuracy if fixes fail to arrive.
-              </ThemedText>
-            </Collapsible>
-          )}
+          <LessonNotes lessonId="location" />
         </ThemedView>
       </ScrollView>
     </ThemedView>

@@ -1,10 +1,9 @@
 import * as Battery from 'expo-battery';
-import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Collapsible } from '@/components/ui/collapsible';
+import { LessonNotes } from '@/components/lesson-notes/lesson-notes';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
@@ -93,9 +92,6 @@ export function BatteryLesson() {
         contentInsetAdjustmentBehavior="automatic"
         contentContainerStyle={[styles.scrollContent, { paddingBottom: insets.bottom + Spacing.four }]}>
         <ThemedView style={[styles.header, { paddingTop: insets.top + Spacing.three }]}>
-          <Pressable onPress={() => router.back()} style={styles.backButton}>
-            <ThemedText type="linkPrimary">Back</ThemedText>
-          </Pressable>
           <ThemedText type="subtitle">Battery</ThemedText>
           <ThemedText type="code">expo-battery</ThemedText>
           <ThemedText themeColor="textSecondary" style={styles.intro}>
@@ -156,27 +152,7 @@ export function BatteryLesson() {
         )}
 
         <ThemedView style={styles.section}>
-          <ThemedText type="smallBold">What this lesson covers</ThemedText>
-          <Collapsible title="Hooks — useBatteryLevel() / useBatteryState()">
-            <ThemedText type="small">
-              Subscribe to live battery level and charging state in React components.
-            </ThemedText>
-          </Collapsible>
-          <Collapsible title="Low power — useLowPowerMode()">
-            <ThemedText type="small">
-              Detect iOS Low Power Mode or Android Power Saver from a boolean hook.
-            </ThemedText>
-          </Collapsible>
-          <Collapsible title="Combined state — getPowerStateAsync()">
-            <ThemedText type="small">
-              Fetch level, charging state, and low power mode in one async call.
-            </ThemedText>
-          </Collapsible>
-          <Collapsible title="Listeners — addBatteryLevelListener()">
-            <ThemedText type="small">
-              React to battery level, charging state, and low power mode changes over time.
-            </ThemedText>
-          </Collapsible>
+          <LessonNotes lessonId="battery" />
         </ThemedView>
       </ScrollView>
     </ThemedView>

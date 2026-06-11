@@ -1,10 +1,9 @@
 import * as Contacts from 'expo-contacts';
-import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Collapsible } from '@/components/ui/collapsible';
+import { LessonNotes } from '@/components/lesson-notes/lesson-notes';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
@@ -116,9 +115,6 @@ export function ContactsLesson() {
   if (!permission.granted) {
     return (
       <ThemedView style={[styles.centered, styles.permissionScreen, { paddingTop: insets.top }]}>
-        <Pressable onPress={() => router.back()} style={styles.backButton}>
-          <ThemedText type="linkPrimary">Back</ThemedText>
-        </Pressable>
         <ThemedText type="subtitle">Contacts</ThemedText>
         <ThemedText themeColor="textSecondary" style={styles.permissionCopy}>
           Grant contacts access to list address book entries, inspect details, and use the native
@@ -139,9 +135,6 @@ export function ContactsLesson() {
         contentInsetAdjustmentBehavior="automatic"
         contentContainerStyle={[styles.scrollContent, { paddingBottom: insets.bottom + Spacing.four }]}>
         <ThemedView style={[styles.header, { paddingTop: insets.top + Spacing.three }]}>
-          <Pressable onPress={() => router.back()} style={styles.backButton}>
-            <ThemedText type="linkPrimary">Back</ThemedText>
-          </Pressable>
           <ThemedText type="subtitle">Contacts</ThemedText>
           <ThemedText type="code">expo-contacts</ThemedText>
           <ThemedText themeColor="textSecondary" style={styles.intro}>
@@ -208,34 +201,7 @@ export function ContactsLesson() {
         )}
 
         <ThemedView style={styles.section}>
-          <ThemedText type="smallBold">What this lesson covers</ThemedText>
-          <Collapsible title="Permissions — requestPermissionsAsync()">
-            <ThemedText type="small">
-              Request read/write contacts access before querying the address book on Android.
-            </ThemedText>
-          </Collapsible>
-          <Collapsible title="List contacts — getContactsAsync()">
-            <ThemedText type="small">
-              Query contacts with selected <ThemedText type="code">fields</ThemedText>, sorting, and
-              paging options.
-            </ThemedText>
-          </Collapsible>
-          <Collapsible title="Details — getContactByIdAsync()">
-            <ThemedText type="small">
-              Fetch a single contact with emails, phone numbers, and company info.
-            </ThemedText>
-          </Collapsible>
-          <Collapsible title="Native picker — presentContactPickerAsync()">
-            <ThemedText type="small">
-              Let the user choose one contact from the system UI. On iOS this works without prior
-              permission.
-            </ThemedText>
-          </Collapsible>
-          <Collapsible title="Availability — hasContactsAsync()">
-            <ThemedText type="small">
-              Check whether the device has any contacts before running a full query.
-            </ThemedText>
-          </Collapsible>
+          <LessonNotes lessonId="contacts" />
         </ThemedView>
       </ScrollView>
     </ThemedView>

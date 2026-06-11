@@ -1,11 +1,10 @@
 import { File } from 'expo-file-system';
 import * as DocumentPicker from 'expo-document-picker';
-import { router } from 'expo-router';
 import { useState } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Collapsible } from '@/components/ui/collapsible';
+import { LessonNotes } from '@/components/lesson-notes/lesson-notes';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
@@ -97,9 +96,6 @@ export function DocumentPickerLesson() {
         contentInsetAdjustmentBehavior="automatic"
         contentContainerStyle={[styles.scrollContent, { paddingBottom: insets.bottom + Spacing.four }]}>
         <ThemedView style={[styles.header, { paddingTop: insets.top + Spacing.three }]}>
-          <Pressable onPress={() => router.back()} style={styles.backButton}>
-            <ThemedText type="linkPrimary">Back</ThemedText>
-          </Pressable>
           <ThemedText type="subtitle">Document Picker</ThemedText>
           <ThemedText type="code">expo-document-picker</ThemedText>
           <ThemedText themeColor="textSecondary" style={styles.intro}>
@@ -175,31 +171,7 @@ export function DocumentPickerLesson() {
         )}
 
         <ThemedView style={styles.section}>
-          <ThemedText type="smallBold">What this lesson covers</ThemedText>
-          <Collapsible title="Pick files — getDocumentAsync()">
-            <ThemedText type="small">
-              Launch the native document picker UI. Must be triggered by a user action, especially on
-              web.
-            </ThemedText>
-          </Collapsible>
-          <Collapsible title="MIME filters — type">
-            <ThemedText type="small">
-              Restrict selectable files with MIME types like{' '}
-              <ThemedText type="code">image/*</ThemedText> or{' '}
-              <ThemedText type="code">application/pdf</ThemedText>.
-            </ThemedText>
-          </Collapsible>
-          <Collapsible title="Cache copy — copyToCacheDirectory">
-            <ThemedText type="small">
-              Copy picked files into app cache so other Expo APIs can read them immediately.
-            </ThemedText>
-          </Collapsible>
-          <Collapsible title="Read files — expo-file-system File">
-            <ThemedText type="small">
-              Use <ThemedText type="code">new File(uri)</ThemedText> to inspect metadata and read text
-              contents after picking.
-            </ThemedText>
-          </Collapsible>
+          <LessonNotes lessonId="document-picker" />
         </ThemedView>
       </ScrollView>
     </ThemedView>

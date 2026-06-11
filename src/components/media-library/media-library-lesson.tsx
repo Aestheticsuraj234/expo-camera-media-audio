@@ -2,7 +2,6 @@ import { Asset } from 'expo-asset';
 import { Image } from 'expo-image';
 import * as Haptics from 'expo-haptics';
 import * as MediaLibrary from 'expo-media-library';
-import { router } from 'expo-router';
 import { useCallback, useState } from 'react';
 import {
   ActivityIndicator,
@@ -15,7 +14,7 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Collapsible } from '@/components/ui/collapsible';
+import { LessonNotes } from '@/components/lesson-notes/lesson-notes';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
@@ -174,9 +173,6 @@ export function MediaLibraryLesson() {
   if (!permission.granted) {
     return (
       <ThemedView style={[styles.centered, styles.permissionScreen, { paddingTop: insets.top }]}>
-        <Pressable onPress={() => router.back()} style={styles.backButton}>
-          <ThemedText type="linkPrimary">Back</ThemedText>
-        </Pressable>
         <ThemedText type="subtitle">Media Library</ThemedText>
         <ThemedText themeColor="textSecondary" style={styles.permissionCopy}>
           Grant access to browse photos and videos, inspect asset metadata, and save files to the
@@ -197,9 +193,6 @@ export function MediaLibraryLesson() {
         contentInsetAdjustmentBehavior="automatic"
         contentContainerStyle={[styles.scrollContent, { paddingBottom: insets.bottom + Spacing.four }]}>
         <ThemedView style={[styles.header, { paddingTop: insets.top + Spacing.three }]}>
-          <Pressable onPress={() => router.back()} style={styles.backButton}>
-            <ThemedText type="linkPrimary">Back</ThemedText>
-          </Pressable>
           <ThemedText type="subtitle">Media Library</ThemedText>
           <ThemedText type="code">expo-media-library</ThemedText>
           <ThemedText themeColor="textSecondary" style={styles.intro}>
@@ -334,48 +327,7 @@ export function MediaLibraryLesson() {
         )}
 
         <ThemedView style={styles.section}>
-          <ThemedText type="smallBold">What this lesson covers</ThemedText>
-          <Collapsible title="Permissions — usePermissions()">
-            <ThemedText type="small">
-              Request read access with <ThemedText type="code">usePermissions()</ThemedText>. On iOS,
-              check <ThemedText type="code">accessPrivileges</ThemedText> for full vs limited library
-              access.
-            </ThemedText>
-          </Collapsible>
-          <Collapsible title="Albums — getAlbumsAsync()">
-            <ThemedText type="small">
-              List user albums (including smart albums on iOS) and filter assets with the{' '}
-              <ThemedText type="code">album</ThemedText> option in{' '}
-              <ThemedText type="code">getAssetsAsync()</ThemedText>.
-            </ThemedText>
-          </Collapsible>
-          <Collapsible title="Assets — getAssetsAsync()">
-            <ThemedText type="small">
-              Page through photos and videos using <ThemedText type="code">first</ThemedText>,{' '}
-              <ThemedText type="code">after</ThemedText>, <ThemedText type="code">mediaType</ThemedText>,
-              and <ThemedText type="code">sortBy</ThemedText>.
-            </ThemedText>
-          </Collapsible>
-          <Collapsible title="Metadata — getAssetInfoAsync()">
-            <ThemedText type="small">
-              Fetch filename, dimensions, duration, EXIF, and location details for a selected asset.
-              On Android, full metadata needs{' '}
-              <ThemedText type="code">ACCESS_MEDIA_LOCATION</ThemedText> via the config plugin option{' '}
-              <ThemedText type="code">isAccessMediaLocationEnabled</ThemedText>.
-            </ThemedText>
-          </Collapsible>
-          <Collapsible title="Save — saveToLibraryAsync()">
-            <ThemedText type="small">
-              Copy a local file into the gallery. Pair this with camera captures or exported files
-              from your app cache.
-            </ThemedText>
-          </Collapsible>
-          <Collapsible title="Limited access — presentPermissionsPickerAsync()">
-            <ThemedText type="small">
-              On iOS and Android 14+, let users adjust which items your app can read when they chose
-              limited library access.
-            </ThemedText>
-          </Collapsible>
+          <LessonNotes lessonId="media-library" />
         </ThemedView>
       </ScrollView>
     </ThemedView>

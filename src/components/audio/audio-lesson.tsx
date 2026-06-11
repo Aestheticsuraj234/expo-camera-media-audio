@@ -8,12 +8,11 @@ import {
   useAudioRecorderState,
 } from 'expo-audio';
 import * as Haptics from 'expo-haptics';
-import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Alert, Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Collapsible } from '@/components/ui/collapsible';
+import { LessonNotes } from '@/components/lesson-notes/lesson-notes';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
@@ -166,9 +165,6 @@ export function AudioLesson() {
         contentInsetAdjustmentBehavior="automatic"
         contentContainerStyle={[styles.scrollContent, { paddingBottom: insets.bottom + Spacing.four }]}>
         <ThemedView style={[styles.header, { paddingTop: insets.top + Spacing.three }]}>
-          <Pressable onPress={() => router.back()} style={styles.backButton}>
-            <ThemedText type="linkPrimary">Back</ThemedText>
-          </Pressable>
           <ThemedText type="subtitle">Audio</ThemedText>
           <ThemedText type="code">expo-audio</ThemedText>
           <ThemedText themeColor="textSecondary" style={styles.intro}>
@@ -283,55 +279,7 @@ export function AudioLesson() {
         )}
 
         <ThemedView style={styles.section}>
-          <ThemedText type="smallBold">What this lesson covers</ThemedText>
-          <Collapsible title="Permissions — requestRecordingPermissionsAsync()">
-            <ThemedText type="small">
-              Call <ThemedText type="code">AudioModule.requestRecordingPermissionsAsync()</ThemedText>{' '}
-              before recording. Android also needs{' '}
-              <ThemedText type="code">RECORD_AUDIO</ThemedText> in your native build.
-            </ThemedText>
-          </Collapsible>
-          <Collapsible title="Audio session — setAudioModeAsync()">
-            <ThemedText type="small">
-              Configure the session with{' '}
-              <ThemedText type="code">playsInSilentMode</ThemedText> and{' '}
-              <ThemedText type="code">allowsRecording</ThemedText> so playback and recording behave
-              correctly on iOS.
-            </ThemedText>
-          </Collapsible>
-          <Collapsible title="Playback — useAudioPlayer()">
-            <ThemedText type="small">
-              Load a local asset, remote URL, or recording URI. Use{' '}
-              <ThemedText type="code">play()</ThemedText>,{' '}
-              <ThemedText type="code">pause()</ThemedText>,{' '}
-              <ThemedText type="code">seekTo()</ThemedText>, and{' '}
-              <ThemedText type="code">replace()</ThemedText> to switch sources.
-            </ThemedText>
-          </Collapsible>
-          <Collapsible title="Status — useAudioPlayerStatus()">
-            <ThemedText type="small">
-              Subscribe to playback progress with{' '}
-              <ThemedText type="code">useAudioPlayerStatus(player)</ThemedText> for{' '}
-              <ThemedText type="code">playing</ThemedText>,{' '}
-              <ThemedText type="code">currentTime</ThemedText>, and{' '}
-              <ThemedText type="code">duration</ThemedText>.
-            </ThemedText>
-          </Collapsible>
-          <Collapsible title="Recording — useAudioRecorder()">
-            <ThemedText type="small">
-              Create a recorder with <ThemedText type="code">RecordingPresets</ThemedText>, call{' '}
-              <ThemedText type="code">prepareToRecordAsync()</ThemedText>, then{' '}
-              <ThemedText type="code">record()</ThemedText> and{' '}
-              <ThemedText type="code">stop()</ThemedText>. The file URI is on{' '}
-              <ThemedText type="code">recorder.uri</ThemedText> after stopping.
-            </ThemedText>
-          </Collapsible>
-          <Collapsible title="Recorder state — useAudioRecorderState()">
-            <ThemedText type="small">
-              Track <ThemedText type="code">isRecording</ThemedText> and{' '}
-              <ThemedText type="code">durationMillis</ThemedText> in the UI while recording.
-            </ThemedText>
-          </Collapsible>
+          <LessonNotes lessonId="audio" />
         </ThemedView>
       </ScrollView>
     </ThemedView>

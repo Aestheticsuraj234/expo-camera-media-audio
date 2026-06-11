@@ -9,7 +9,6 @@ import {
 } from 'expo-camera';
 import { Image } from 'expo-image';
 import * as Haptics from 'expo-haptics';
-import { router } from 'expo-router';
 import { useIsFocused } from '@react-navigation/native';
 import { useCallback, useRef, useState } from 'react';
 import {
@@ -23,7 +22,7 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Collapsible } from '@/components/ui/collapsible';
+import { LessonNotes } from '@/components/lesson-notes/lesson-notes';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
@@ -173,9 +172,6 @@ export function CameraLesson() {
   if (!permission.granted) {
     return (
       <ThemedView style={[styles.centered, styles.permissionScreen, { paddingTop: insets.top }]}>
-        <Pressable onPress={() => router.back()} style={styles.backButton}>
-          <ThemedText type="linkPrimary">Back</ThemedText>
-        </Pressable>
         <ThemedText type="subtitle" style={styles.permissionTitle}>
           Camera access
         </ThemedText>
@@ -218,10 +214,6 @@ export function CameraLesson() {
           )}
 
           <View style={styles.previewOverlay}>
-            <Pressable onPress={() => router.back()} style={styles.overlayChip}>
-              <ThemedText style={styles.overlayChipText}>Back</ThemedText>
-            </Pressable>
-
             <View style={styles.overlayRow}>
               <Pressable onPress={cycleFlash} style={styles.overlayChip}>
                 <ThemedText style={styles.overlayChipText}>Flash: {formatFlash(flash)}</ThemedText>
@@ -333,49 +325,7 @@ export function CameraLesson() {
         )}
 
         <ThemedView style={styles.section}>
-          <ThemedText type="smallBold">What this lesson covers</ThemedText>
-          <Collapsible title="Permissions — useCameraPermissions()">
-            <ThemedText type="small">
-              Request camera access before rendering <ThemedText type="code">CameraView</ThemedText>.
-              The hook returns permission status and a request function.
-            </ThemedText>
-          </Collapsible>
-          <Collapsible title="Preview — CameraView">
-            <ThemedText type="small">
-              <ThemedText type="code">facing</ThemedText>,{' '}
-              <ThemedText type="code">zoom</ThemedText>, and{' '}
-              <ThemedText type="code">mirror</ThemedText> control the live preview. Only one camera
-              preview should be active at a time.
-            </ThemedText>
-          </Collapsible>
-          <Collapsible title="Photo — takePictureAsync()">
-            <ThemedText type="small">
-              Call on the camera ref after <ThemedText type="code">onCameraReady</ThemedText>. Photos
-              are written to the app cache and returned as a local URI.
-            </ThemedText>
-          </Collapsible>
-          <Collapsible title="Video — recordAsync() / stopRecording()">
-            <ThemedText type="small">
-              Set <ThemedText type="code">mode={'"'}video{'"'}</ThemedText>, request microphone access with{' '}
-              <ThemedText type="code">useMicrophonePermissions()</ThemedText>, then start with{' '}
-              <ThemedText type="code">recordAsync()</ThemedText> and stop with{' '}
-              <ThemedText type="code">stopRecording()</ThemedText>.
-            </ThemedText>
-          </Collapsible>
-          <Collapsible title="Flash, torch & zoom">
-            <ThemedText type="small">
-              <ThemedText type="code">flash</ThemedText> affects still captures,{' '}
-              <ThemedText type="code">enableTorch</ThemedText> keeps the light on during preview, and{' '}
-              <ThemedText type="code">zoom</ThemedText> accepts a value from 0 to 1.
-            </ThemedText>
-          </Collapsible>
-          <Collapsible title="Barcode scan — onBarcodeScanned">
-            <ThemedText type="small">
-              Pass <ThemedText type="code">barcodeScannerSettings</ThemedText> and handle{' '}
-              <ThemedText type="code">onBarcodeScanned</ThemedText> to read QR codes and common barcodes
-              from the preview.
-            </ThemedText>
-          </Collapsible>
+          <LessonNotes lessonId="camera" />
         </ThemedView>
       </ScrollView>
     </ThemedView>
