@@ -9,6 +9,7 @@ import {
 } from 'expo-camera';
 import { Image } from 'expo-image';
 import * as Haptics from 'expo-haptics';
+import * as MediaLibrary from 'expo-media-library';
 import { useIsFocused } from '@react-navigation/native';
 import { useCallback, useRef, useState } from 'react';
 import {
@@ -58,6 +59,7 @@ export function CameraLesson() {
   const [videoUri, setVideoUri] = useState<string | null>(null);
   const [scanResult, setScanResult] = useState<BarcodeScanningResult | null>(null);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
+  const [isSavingToGallery, setIsSavingToGallery] = useState(false);
 
   const cameraMode: CameraMode = mode === 'scan' ? 'picture' : mode;
   const isScanMode = mode === 'scan';
@@ -158,6 +160,34 @@ export function CameraLesson() {
     }
     if (mode === 'video') {
       toggleRecording();
+    }
+  };
+
+  const saveCaptureToGallery = async () => {
+    const uri = photoUri ?? videoUri;
+    if (!uri) {
+      return;
+    }
+
+    setIsSavingToGallery(true);
+
+    try {
+      const { granted } = await MediaLibrary.requestPermissionsAsync(true);
+      if (!granted) {
+        Alert.alert(
+          'Permission required',
+          'Allow photo library access to save captures to your gallery.',
+        );
+        return;
+      }
+
+      await MediaLibrary.saveToLibraryAsync(uri);
+      setStatusMessage(photoUri ? 'Photo saved to your gallery.' : 'Video saved to your gallery.');
+      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    } catch (error) {
+      Alert.alert('Save failed', error instanceof Error ? error.message : 'Unknown error');
+    } finally {
+      setIsSavingToGallery(false);
     }
   };
 
@@ -315,12 +345,27 @@ export function CameraLesson() {
         {(photoUri || videoUri) && (
           <ThemedView style={styles.section}>
             <ThemedText type="smallBold">Last capture</ThemedText>
+            <ThemedText type="small" themeColor="textSecondary">
+              Captures are stored in app cache first. Save to gallery to keep them in Photos.
+            </ThemedText>
             {photoUri && <Image source={{ uri: photoUri }} style={styles.capturePreview} contentFit="cover" />}
             {videoUri && (
               <ThemedText type="small" selectable themeColor="textSecondary">
                 Video URI: {videoUri}
               </ThemedText>
             )}
+            <Pressable
+              disabled={isSavingToGallery}
+              onPress={saveCaptureToGallery}
+              style={({ pressed }) => [
+                styles.galleryButton,
+                pressed && styles.buttonPressed,
+                isSavingToGallery && styles.galleryButtonDisabled,
+              ]}>
+              <ThemedText style={styles.galleryButtonLabel}>
+                {isSavingToGallery ? 'Saving…' : 'Save to gallery'}
+              </ThemedText>
+            </Pressable>
           </ThemedView>
         )}
 
@@ -490,5 +535,18 @@ const styles = StyleSheet.create({
     width: '100%',
     aspectRatio: 3 / 4,
     borderRadius: Spacing.three,
+  },
+  galleryButton: {
+    backgroundColor: '#208AEF',
+    borderRadius: Spacing.three,
+    paddingVertical: Spacing.three,
+    alignItems: 'center',
+  },
+  galleryButtonDisabled: {
+    opacity: 0.6,
+  },
+  galleryButtonLabel: {
+    color: '#ffffff',
+    fontWeight: '700',
   },
 });

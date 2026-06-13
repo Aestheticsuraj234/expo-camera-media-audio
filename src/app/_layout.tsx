@@ -5,6 +5,11 @@ import { useColorScheme } from 'react-native';
 
 import { AnimatedSplashOverlay } from '@/components/animated-icon';
 
+export const unstable_settings = {
+  initialRouteName: '(tabs)',
+  anchor: '(tabs)/capture',
+};
+
 export default function RootLayout() {
   const colorScheme = useColorScheme();
 

@@ -15,6 +15,10 @@ export default function AppTabs() {
       backgroundColor={colors.background}
       indicatorColor={colors.backgroundElement}
       labelStyle={{ selected: { color: colors.text } }}>
+      <NativeTabs.Trigger name="index" hidden>
+        <NativeTabs.Trigger.Label hidden>Index</NativeTabs.Trigger.Label>
+      </NativeTabs.Trigger>
+
       {LESSON_CATEGORIES.map((category) => (
         <NativeTabs.Trigger
           key={category.id}
